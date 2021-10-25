@@ -6,7 +6,7 @@ fetch(input = "http://localhost:3000/api/products")
     for (let i = 0; i < data.length; i++) {
         let items = document.querySelector('#items');
         htmlInput += 
-                `<a href="./product.html?id= ${data[i]._id}"> 
+                `<a href="./product.html?id=${data[i]._id}"> 
                 <article> 
                 <img src="${data[i].imageUrl}" alt="Lorem ipsum dolor sit amet, Kanap name1"> 
                 <h3 class="productName">${data[i].name}</h3> 
@@ -15,6 +15,3 @@ fetch(input = "http://localhost:3000/api/products")
                 </a>`;
         items.innerHTML = htmlInput ;
 }});
-
-
-}
