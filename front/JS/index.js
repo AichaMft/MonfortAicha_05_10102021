@@ -13,5 +13,7 @@ fetch(input = "http://localhost:3000/api/products")
                 <p class="productDescription">${data[i].description}</p> 
                 </article> 
                 </a>`;
-        items.innerHTML = htmlInput ;
-}});
+        items.innerHTML = htmlInput ;}   
+})
+.catch((error) => {
+console.log(`${error}`) })
