@@ -159,7 +159,7 @@ const validFirstName = async function (inputFirstName) {
   if (charRegExp.test(inputFirstName.value)) {
     firstNameErrorMsg.innerHTML = '';
   } else {
-    firstNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+    firstNameErrorMsg.innerHTML = 'Ce champ doit contenir uniquement des lettres.';
   }
 };
 
@@ -170,7 +170,7 @@ const validLastName = function (inputLastName) {
   if (charRegExp.test(inputLastName.value)) {
     lastNameErrorMsg.innerHTML = '';
   } else {
-    lastNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+    lastNameErrorMsg.innerHTML = 'Ce champ doit contenir uniquement des lettres.';
   }
 };
 
@@ -181,7 +181,7 @@ const validAddress = function (inputAddress) {
   if (addressRegExp.test(inputAddress.value)) {
     addressErrorMsg.innerHTML = '';
   } else {
-    addressErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+    addressErrorMsg.innerHTML = "L'adresse que vous avez renseigné n'est pas valide.";
   }
 };
 
@@ -192,7 +192,7 @@ const validCity = function (inputCity) {
   if (charRegExp.test(inputCity.value)) {
     cityErrorMsg.innerHTML = '';
   } else {
-    cityErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+    cityErrorMsg.innerHTML = 'Ce champ doit contenir uniquement des lettres.';
   }
 };
 
@@ -203,7 +203,7 @@ const validEmail = function (inputEmail) {
   if (emailRegExp.test(inputEmail.value)) {
     emailErrorMsg.innerHTML = '';
   } else {
-    emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.';
+    emailErrorMsg.innerHTML = 'Veuillez renseigner une adresse mail valide.';
   }
 };
 const command = document.querySelector("#order");
@@ -211,7 +211,7 @@ command.addEventListener("click", (event) => {
   event.preventDefault();
   if (validFirstName && validLastName && validAddress && validCity && validEmail) {
     // Mettre les valeurs du formulaire et les produits du panier dans un objet à envoyer vers le serveur
-    const toto = {
+    const order = {
       contact: {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -221,12 +221,12 @@ command.addEventListener("click", (event) => {
       },
       products: idProducts,
     };
-    console.log(toto);
+    console.log(order);
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
-      }, body: JSON.stringify(toto),
+      }, body: JSON.stringify(order),
       mode: 'cors'
     })
       .then((response) => response.json())
