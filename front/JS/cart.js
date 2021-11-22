@@ -75,7 +75,7 @@ function modifQte() {
     qteModif[q].addEventListener("change", (event) => {
       event.preventDefault();
 
-      //Selection de l'element à modifier en fonction de son id ET sa couleur
+      //Selection de l'element à modifier en fonction de son id et sa couleur
       let quantityModif = localStorageProducts[q].quantite;
       let qteModifValue = qteModif[q].valueAsNumber;
 
@@ -132,22 +132,22 @@ firstName.addEventListener('change', function () {
   validFirstName(this);
 });
 
-// Ecoute de la modification du prénom
+// Ecoute de la modification du nom
 lastName.addEventListener('change', function () {
   validLastName(this);
 });
 
-// Ecoute de la modification du prénom
+// Ecoute de la modification de l'adresse
 address.addEventListener('change', function () {
   validAddress(this);
 });
 
-// Ecoute de la modification du prénom
+// Ecoute de la modification de la ville
 city.addEventListener('change', function () {
   validCity(this);
 });
 
-// Ecoute de la modification du prénom
+// Ecoute de la modification de l'email
 email.addEventListener('onchange', function () {
   validEmail(this);
 });
@@ -231,10 +231,12 @@ command.addEventListener("click", (event) => {
     })
       .then((response) => response.json())
       .then((data) => {
- //récuperer l'order id 
+        //récuperer l'order id 
         let getOrderId = data.orderId;
-//rediriger vers page confirmation.html et ajouter le parametre orderid a l'url
-        window.location = `./confirmation.html?id=` + getOrderId ; 
+        // Message popup de redirection
+        window.confirm("Vous allez être redirigé vers la page confirmation");
+        //rediriger vers page confirmation.html et ajouter le parametre orderid a l'url
+        window.location = `./confirmation.html?id=` + getOrderId;
       });
   } else {
     alert("Veuillez remplir les champs du formulaire");
