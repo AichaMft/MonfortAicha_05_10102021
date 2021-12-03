@@ -39,7 +39,7 @@ fetch(`http://localhost:3000/api/products/${productId}`)
             let srcUrl = data.imageUrl;
             let choixColor = itemColors.value;
             let nomProduit = itemName.textContent;
-            let choixQte = itemQuantity.value;
+            let choixQte = Number(itemQuantity.value);
             //fonction confirmation d'ajout au panier 
             const confirm = () => {
                 if (window.confirm("Cliquez sur annuler pour continuer vos achats et revenir à l'accueil")) {
@@ -58,11 +58,6 @@ fetch(`http://localhost:3000/api/products/${productId}`)
                     confirm()
                 }
             };
-            //var ajout local storage
-            const ajoutLS = () => {
-                localStorageProducts.push(optionsProduit);
-                localStorage.setItem("product", JSON.stringify(localStorageProducts));
-            };
             //Récuperer les valeurs du formulaire
             let optionsProduit = {
                 "nomProduit": nomProduit,
@@ -72,14 +67,28 @@ fetch(`http://localhost:3000/api/products/${productId}`)
                 "choix_couleur": choixColor,
                 "quantite": choixQte,
             };
-            let localStorageProducts = JSON.parse(localStorage.getItem("product"));
-            if (localStorageProducts) {
-                ajoutLS();
-                validite();
-            } else {
-                localStorageProducts = [];
-                ajoutLS();
-                validite();
+            let localStorageProducts = [];
+            if (localStorage.getItem("product")) {
+                // si j'ai des données, elles sont transférées dans le tableau 
+                localStorageProducts = JSON.parse(localStorage.getItem("product"));
+
+                // je créé une variable qui vérifie si un produit a un id et une couleur identique dans mon tableau
+                let prodIndex = localStorageProducts.findIndex((item => item.id_produit === optionsProduit.id_produit && optionsProduit.choix_couleur === item.choix_couleur));
+                // si cela est le cas, alors la quantité du produit est modifiée
+                if (prodIndex !== -1) {
+                    localStorageProducts[prodIndex].quantite += optionsProduit.quantite;
+                // sinon si ce n'est pas le cas, j'ajoute le produit dans mon tableau 
+                } else if (prodIndex === -1) {
+                    localStorageProducts.push(optionsProduit)
+                }
+                // j'envoi les produits de mon tableau dans le local storage et je convertis les données en chaine de caractère
+                localStorage.setItem("product", JSON.stringify(localStorageProducts));
             }
-        })
-    });
+            // sinon si le local storage est vide alors j'envoi les données avec un tableau et je convertis ces données en chaine de caractères
+            else {
+                localStorageProducts.push(optionsProduit);
+                localStorage.setItem("product", JSON.stringify(localStorageProducts));
+            }
+            validite();
+        });
+    })

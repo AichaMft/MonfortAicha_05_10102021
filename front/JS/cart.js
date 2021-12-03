@@ -3,6 +3,8 @@ let localStorageProducts = JSON.parse(localStorage.getItem("product"));
 const positionEmptyCart = document.querySelector("#cart__items");
 //condition si le local storage est vide alors
 if (localStorageProducts === null | localStorageProducts === 0) {
+  let form = document.querySelector('.cart__order__form');
+  form.innerHTML = '';
   const emptyCart = `<p>Votre panier est vide</p>`;
   positionEmptyCart.innerHTML = emptyCart;
 } else {
@@ -50,16 +52,14 @@ function recupTotal() {
   for (let i = 0; i < allQte; ++i) {
     totalQte += itemQte[i].valueAsNumber;
   }
-
   let productTotalQuantity = document.getElementById('totalQuantity');
   productTotalQuantity.innerHTML = totalQte;
-
 
   // Récupération du prix total
   totalPrice = 0;
 
   for (let i = 0; i < allQte; i++) {
-    totalPrice += (itemQte[i].valueAsNumber * localStorageProducts[i].prix);
+    totalPrice += Math.round(itemQte[i].valueAsNumber * localStorageProducts[i].prix);
   }
 
   let productTotalPrice = document.getElementById('totalPrice');
@@ -116,133 +116,136 @@ function deleteProduct() {
 };
 deleteProduct();
 
-//check des caractères avec regex
+// Variables pour le dom
+let form = document.querySelector(".cart__order__form");
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");
 let address = document.getElementById("address");
 let city = document.getElementById("city");
 let email = document.getElementById("email");
-//Ajout des caractères pris en charge
-let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
-let charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
+// Variables messages d'erreur
+let firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
+let lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
+let addressErrorMsg = document.getElementById('addressErrorMsg');
+let cityErrorMsg = document.getElementById('cityErrorMsg');
+let emailErrorMsg = document.getElementById('emailErrorMsg');
+
+//Création des expressions régulières
+let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
+let charRegExp = new RegExp("^[a-zA-Z]+$");
 let addressRegExp = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
 
 // Ecoute de la modification du prénom
 firstName.addEventListener('change', function () {
   validFirstName(this);
 });
+//validation du prénom
+const validFirstName = () => {
+
+  if (charRegExp.test(firstName.value) == false || firstName.value.length == 0 ) {
+    firstNameErrorMsg.innerHTML = 'Champs incorrect';
+    return false;
+  } else {
+    firstNameErrorMsg.innerHTML = '';
+    return true;
+  }
+};
 
 // Ecoute de la modification du nom
 lastName.addEventListener('change', function () {
   validLastName(this);
 });
+//validation du nom
+const validLastName = () => {
+
+  if (charRegExp.test(lastName.value) == false || lastName.value.length == 0) {
+    lastNameErrorMsg.innerHTML = 'Champ incorrect.';
+    return false;
+  } else {
+    lastNameErrorMsg.innerHTML = '';
+    return true;
+  }
+};
 
 // Ecoute de la modification de l'adresse
 address.addEventListener('change', function () {
   validAddress(this);
 });
+//validation de l'adresse
+const validAddress = () => {
 
+  if (addressRegExp.test(address.value) == false || address.value.length == 0) {
+    addressErrorMsg.innerHTML = 'Champ incorrect.';
+    return false;
+  } else {
+    addressErrorMsg.innerHTML = '';
+    return true;
+  }
+};
 // Ecoute de la modification de la ville
 city.addEventListener('change', function () {
   validCity(this);
 });
-
-// Ecoute de la modification de l'email
-email.addEventListener('onchange', function () {
-  validEmail(this);
-});
-
-//validation du prénom
-const validFirstName = async function (inputFirstName) {
-  let firstNameErrorMsg = inputFirstName.nextElementSibling;
-
-  if (charRegExp.test(inputFirstName.value)) {
-    firstNameErrorMsg.innerHTML = '';
-  } else {
-    firstNameErrorMsg.innerHTML = 'Ce champ doit contenir uniquement des lettres.';
-  }
-};
-
-//validation du nom
-const validLastName = function (inputLastName) {
-  let lastNameErrorMsg = inputLastName.nextElementSibling;
-
-  if (charRegExp.test(inputLastName.value)) {
-    lastNameErrorMsg.innerHTML = '';
-  } else {
-    lastNameErrorMsg.innerHTML = 'Ce champ doit contenir uniquement des lettres.';
-  }
-};
-
-//validation de l'adresse
-const validAddress = function (inputAddress) {
-  let addressErrorMsg = inputAddress.nextElementSibling;
-
-  if (addressRegExp.test(inputAddress.value)) {
-    addressErrorMsg.innerHTML = '';
-  } else {
-    addressErrorMsg.innerHTML = "L'adresse que vous avez renseigné n'est pas valide.";
-  }
-};
-
 //validation de la ville
-const validCity = function (inputCity) {
-  let cityErrorMsg = inputCity.nextElementSibling;
+const validCity = () => {
 
-  if (charRegExp.test(inputCity.value)) {
-    cityErrorMsg.innerHTML = '';
+  if (charRegExp.test(city.value) == false || city.value.length == 0) {
+    cityErrorMsg.innerHTML = 'Champ incorrect.';
+    return false;
   } else {
-    cityErrorMsg.innerHTML = 'Ce champ doit contenir uniquement des lettres.';
+    cityErrorMsg.innerHTML = '';
+    return true;
   }
 };
 
+// Ecoute de la modification du mail
+email.addEventListener('change', function () {
+  validEmail(this);
+})
 //validation de l'email
-const validEmail = function (inputEmail) {
-  let emailErrorMsg = inputEmail.nextElementSibling;
+const validEmail = () => {
 
-  if (emailRegExp.test(inputEmail.value)) {
-    emailErrorMsg.innerHTML = '';
+  if (emailRegExp.test(email.value) == false || email.value.length == 0) {
+    emailErrorMsg.innerHTML = 'Champ incorrect';
+    return false;
   } else {
-    emailErrorMsg.innerHTML = 'Veuillez renseigner une adresse mail valide.';
+    emailErrorMsg.innerHTML = '';
+    return true;
   }
 };
 const command = document.querySelector("#order");
-command.addEventListener("click", (event) => {
-  event.preventDefault();
-  if (validFirstName && validLastName && validAddress && validCity && validEmail) {
-    // Mettre les valeurs du formulaire et les produits du panier dans un objet à envoyer vers le serveur
-    const order = {
-      contact: {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        address: address.value,
-        city: city.value,
-        email: email.value,
-      },
-      products: idProducts,
-    };
-    console.log(order);
-    fetch("http://localhost:3000/api/products/order", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      }, body: JSON.stringify(order),
-      mode: 'cors'
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        //récuperer l'order id 
-        let getOrderId = data.orderId;
-        // Message popup de redirection
-        window.confirm("Vous allez être redirigé vers la page confirmation");
-        //rediriger vers page confirmation.html et ajouter le parametre orderid a l'url
-        window.location = `./confirmation.html?id=` + getOrderId;
-      });
-  } else {
-    alert("Veuillez remplir les champs du formulaire");
+command.addEventListener('click', function (e) {
+  e.preventDefault();
+if (validFirstName() && validLastName() && validAddress() && validCity() && validEmail()) {
+  const userOrder = {
+    contact: {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      address: address.value,
+      city: city.value,
+      email: email.value,
+    },
+    products: idProducts,
   };
+  fetch("http://localhost:3000/api/products/order", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    }, body: JSON.stringify(userOrder),
+    mode: 'cors'
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      //récuperer l'order id 
+      let getOrderId = data.orderId;
+      //rediriger vers page confirmation.html et ajouter le parametre orderid a l'url
+      window.location = `./confirmation.html?id=` + getOrderId;
+    })
+    .catch((error) => {
+      alert(error)
+    });
+} else {
+  alert("Veuillez renseigner tous les champs en respectant la casse")
+  location.reload();
+}
 })
-
-
-
-
