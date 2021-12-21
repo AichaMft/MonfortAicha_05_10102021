@@ -51,10 +51,8 @@ function recupTotal() {
   for (let i = 0; i < allQte; ++i) {
     totalQte += itemQte[i].valueAsNumber;
   }
-
   let productTotalQuantity = document.getElementById('totalQuantity');
   productTotalQuantity.innerHTML = totalQte;
-
 
   // Récupération du prix total
   totalPrice = 0;
@@ -119,7 +117,8 @@ function deleteProduct() {
 };
 deleteProduct();
 
-//check des caractères avec regex
+// Variables pour le dom
+let form = document.querySelector(".cart__order__form");
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");
 let address = document.getElementById("address");
@@ -168,6 +167,10 @@ const validFirstName = function () {
   }
 };
 
+// Ecoute de la modification du nom
+lastName.addEventListener('change', function () {
+  validLastName(this);
+});
 //validation du nom
 const validLastName = function () {
   let lastNameErrorMsg = lastName.nextElementSibling;
@@ -181,6 +184,10 @@ const validLastName = function () {
   }
 };
 
+// Ecoute de la modification de l'adresse
+address.addEventListener('change', function () {
+  validAddress(this);
+});
 //validation de l'adresse
 const validAddress = function () {
   let addressErrorMsg = address.nextElementSibling;
@@ -193,7 +200,10 @@ const validAddress = function () {
     return false
   }
 };
-
+// Ecoute de la modification de la ville
+city.addEventListener('change', function () {
+  validCity(this);
+});
 //validation de la ville
 const validCity = function () {
   let cityErrorMsg = city.nextElementSibling;
@@ -207,6 +217,10 @@ const validCity = function () {
   }
 };
 
+// Ecoute de la modification du mail
+email.addEventListener('change', function () {
+  validEmail(this);
+})
 //validation de l'email
 const validEmail = function () {
   let emailErrorMsg = email.nextElementSibling;
@@ -252,10 +266,4 @@ command.addEventListener("click", (event) => {
       });
   } else {
     alert("Veuillez remplir les champs du formulaire");
-
-  };
-})
-
-
-
-
+  };})
