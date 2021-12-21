@@ -82,14 +82,3 @@ fetch(`http://localhost:3000/api/products/${productId}`)
                 }
             })
         })
-    /*var oldItems = JSON.parse(localStorage.getItem('itemsArray')) || [];
-
-var newItem = {
-    'product-name': itemContainer.find('h2.product-name a').text(),
-    'product-image': itemContainer.find('div.product-image img').attr('src'),
-    'product-price': itemContainer.find('span.product-price').text()
-};
-
-oldItems.push(newItem);
-
-localStorage.setItem('itemsArray', JSON.stringify(oldItems)); */
