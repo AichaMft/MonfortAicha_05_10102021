@@ -16,4 +16,5 @@ fetch(input = "http://localhost:3000/api/products")
         items.innerHTML = htmlInput ;}   
 })
 .catch((error) => {
-console.log(`${error}`) })
+        console.log(`${error}`) 
+});
