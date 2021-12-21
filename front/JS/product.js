@@ -77,6 +77,7 @@ fetch(`http://localhost:3000/api/products/${productId}`)
                             };
                             //condition si il y a le meme produit
                         }}
+                        window.location.href = "./cart.html";
                  } else {
                     console.log("mauvaise saisie")
                 }
